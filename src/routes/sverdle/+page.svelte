@@ -3,7 +3,7 @@
 	import { confetti } from '@neoconfetti/svelte';
 	import type { ActionData, PageData } from './$types';
 	import { MediaQuery } from 'svelte/reactivity';
-	import Cell from './Cell.svelte';
+	import Row from './Row.svelte';
 
 	interface Props {
 		data: PageData;
@@ -109,21 +109,15 @@
 
 	<div class="grid" class:playing={!won} class:bad-guess={form?.badGuess}>
 		{#each Array.from(Array(6).keys()) as row (row)}
-			{@const current = row === i}
-			<h2 class="visually-hidden">Row {row + 1}</h2>
-			<div class="row" class:current>
-				{#each Array.from(Array(5).keys()) as column (column)}
-					{@const guess = current ? currentGuess : data.guesses[row]}
-					<Cell 
-						value={(current ? currentGuess : data.guesses[row])?.[column]}
-						selected={current && column === guess.length}
-						exact={data.answers[row]?.[column] === 'x'}
-						close={data.answers[row]?.[column] === 'c'}
-						missing={data.answers[row]?.[column] === '_'}
-						disabled={!current}
-					/>
-				{/each}
-			</div>
+			<Row 
+				rowNumber={row}
+				isCurrentRow={row === i}
+				isBadGuess={form?.badGuess ?? false}
+				isPlaying={!won}
+				guess={data.guesses[row]}
+				answer={data.answers[row]}
+				currentGuess={currentGuess}
+			/>
 		{/each}
 	</div>
 
@@ -230,23 +224,6 @@
 		justify-content: flex-start;
 	}
 
-	.grid .row {
-		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		grid-gap: 0.2rem;
-		margin: 0 0 0.2rem 0;
-	}
-
-	@media (prefers-reduced-motion: no-preference) {
-		.grid.bad-guess .row.current {
-			animation: wiggle 0.5s;
-		}
-	}
-
-	.grid.playing .row.current {
-		filter: drop-shadow(3px 3px 10px var(--color-bg-0));
-	}
-
 	.controls {
 		text-align: center;
 		justify-content: center;
@@ -336,29 +313,5 @@
 		background: var(--color-theme-1);
 		color: white;
 		outline: none;
-	}
-
-	@keyframes wiggle {
-		0% {
-			transform: translateX(0);
-		}
-		10% {
-			transform: translateX(-2px);
-		}
-		30% {
-			transform: translateX(4px);
-		}
-		50% {
-			transform: translateX(-6px);
-		}
-		70% {
-			transform: translateX(+4px);
-		}
-		90% {
-			transform: translateX(-2px);
-		}
-		100% {
-			transform: translateX(0);
-		}
 	}
 </style>
