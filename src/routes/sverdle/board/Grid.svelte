@@ -10,24 +10,16 @@
 		isBadGuess: boolean;
 	}
 
-	let { 
-		guesses, 
-		answers, 
-		currentIndex, 
-		currentGuess, 
-		isPlaying, 
-		isBadGuess 
-	}: Props = $props();
-
+	let { guesses, answers, currentIndex, currentGuess, isPlaying, isBadGuess }: Props = $props();
 </script>
 
 <div class="grid" class:playing={isPlaying} class:bad-guess={isBadGuess}>
 	{#each Array.from(Array(6).keys()) as row (row)}
-		<Row 
+		<Row
 			rowNumber={row}
 			isCurrentRow={row === currentIndex}
-			isBadGuess={isBadGuess}
-			isPlaying={isPlaying}
+			{isBadGuess}
+			{isPlaying}
 			guess={guesses[row] ?? ''}
 			answer={answers[row] ?? ''}
 			{currentGuess}

@@ -21,8 +21,8 @@
 
 {#if won}
 	<div
-		style="position: absolute; left: 50%; top: 30%; z-index: 1;" 
-		class="confetti-container" 
+		style="position: absolute; left: 50%; top: 30%; z-index: 1;"
+		class="confetti-container"
 		use:confetti={{
 			particleCount: reducedMotion.current ? 0 : undefined,
 			force: 0.7,
@@ -48,4 +48,4 @@
 		color: white;
 		outline: none;
 	}
-</style> 
+</style>

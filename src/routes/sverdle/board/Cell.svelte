@@ -1,14 +1,13 @@
 <script lang="ts">
 	interface Props {
 		value: string | undefined;
-        selected: boolean;
-        exact: boolean;
-        close: boolean;
-        missing: boolean;
-        disabled: boolean;
+		selected: boolean;
+		exact: boolean;
+		close: boolean;
+		missing: boolean;
+		disabled: boolean;
 	}
 	let { value = '', selected, exact, close, missing, disabled }: Props = $props();
-
 </script>
 
 <div class="letter" class:exact class:close class:missing class:selected>
@@ -24,7 +23,7 @@
 			empty
 		{/if}
 	</span>
-	<input name="guess" disabled={disabled} type="hidden" {value} />
+	<input name="guess" {disabled} type="hidden" {value} />
 </div>
 
 <style>
@@ -62,4 +61,4 @@
 	.selected {
 		outline: 2px solid var(--color-theme-1);
 	}
-</style> 
+</style>

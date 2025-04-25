@@ -34,7 +34,7 @@
 <style>
 	.keyboard {
 		--gap: 0.2rem;
-		--size: min(8vw, 4vh, 40px); 
+		--size: min(8vw, 4vh, 40px);
 		position: relative;
 		display: flex;
 		flex-direction: column;
@@ -42,7 +42,7 @@
 		height: 100%;
 	}
 
-    .keyboard > button[data-key='enter'], 
+	.keyboard > button[data-key='enter'],
 	.keyboard > button[data-key='backspace'] {
 		position: absolute;
 		bottom: 0;
@@ -75,4 +75,4 @@
 		color: white;
 		outline: none;
 	}
-</style> 
+</style>

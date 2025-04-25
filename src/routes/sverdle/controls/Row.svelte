@@ -14,12 +14,12 @@
 
 <div class="row">
 	{#each letters as letter, index (index)}
-		<Letter 
-			{letter} 
-			classname={classnames[letter]} 
-			desc={descriptions[letter]} 
-			{submittable} 
-			{onUpdate} 
+		<Letter
+			{letter}
+			classname={classnames[letter]}
+			desc={descriptions[letter]}
+			{submittable}
+			{onUpdate}
 		/>
 	{/each}
 </div>

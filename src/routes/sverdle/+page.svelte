@@ -56,9 +56,7 @@
 	 */
 	function update(event: MouseEvent) {
 		event.preventDefault();
-		const key = (event.target as HTMLButtonElement).getAttribute(
-			'data-key'
-		);
+		const key = (event.target as HTMLButtonElement).getAttribute('data-key');
 
 		if (key === 'backspace') {
 			currentGuess = currentGuess.slice(0, -1);
@@ -104,11 +102,11 @@
 >
 	<a class="how-to-play" href="/sverdle/how-to-play">How to play</a>
 
-	<Grid 
+	<Grid
 		guesses={data.guesses}
 		answers={data.answers}
-		currentIndex={currentIndex}
-		currentGuess={currentGuess}
+		{currentIndex}
+		{currentGuess}
 		isPlaying={!won}
 		isBadGuess={form?.badGuess ?? false}
 	/>
@@ -117,12 +115,7 @@
 		{#if won || data.answers.length >= 6}
 			<Won {won} answer={data.answer ?? undefined} />
 		{:else}
-			<Keyboard 
-				{classnames} 
-				descriptions={description} 
-				{submittable} 
-				onUpdate={update} 
-			/>
+			<Keyboard {classnames} descriptions={description} {submittable} onUpdate={update} />
 		{/if}
 	</div>
 </form>
