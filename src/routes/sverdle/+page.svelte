@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { confetti } from '@neoconfetti/svelte';
 	import type { ActionData, PageData } from './$types';
-	import { MediaQuery } from 'svelte/reactivity';
-	import Row from './Row.svelte';
+	import Grid from './board/Grid.svelte';
+	import Keyboard from './controls/Keyboard.svelte';
+	import Won from './controls/Won.svelte';
 
 	interface Props {
 		data: PageData;
@@ -11,17 +11,14 @@
 	}
 	let { data, form = $bindable() }: Props = $props();
 
-	/** Whether the user prefers reduced motion */
-	const reducedMotion = new MediaQuery('(prefers-reduced-motion: reduce)');
-
 	/** Whether or not the user has won */
 	let won = $derived(data.answers.at(-1) === 'xxxxx');
 
 	/** The index of the current guess */
-	let i = $derived(won ? -1 : data.answers.length);
+	let currentIndex = $derived(won ? -1 : data.answers.length);
 
 	/** The current guess */
-	let currentGuess = $derived(data.guesses[i] || '');
+	let currentGuess = $derived(data.guesses[currentIndex] || '');
 
 	/** Whether the current guess can be submitted */
 	let submittable = $derived(currentGuess.length === 5);
@@ -107,77 +104,28 @@
 >
 	<a class="how-to-play" href="/sverdle/how-to-play">How to play</a>
 
-	<div class="grid" class:playing={!won} class:bad-guess={form?.badGuess}>
-		{#each Array.from(Array(6).keys()) as row (row)}
-			<Row 
-				rowNumber={row}
-				isCurrentRow={row === i}
-				isBadGuess={form?.badGuess ?? false}
-				isPlaying={!won}
-				guess={data.guesses[row]}
-				answer={data.answers[row]}
-				currentGuess={currentGuess}
-			/>
-		{/each}
-	</div>
+	<Grid 
+		guesses={data.guesses}
+		answers={data.answers}
+		currentIndex={currentIndex}
+		currentGuess={currentGuess}
+		isPlaying={!won}
+		isBadGuess={form?.badGuess ?? false}
+	/>
 
 	<div class="controls">
 		{#if won || data.answers.length >= 6}
-			{#if !won && data.answer}
-				<p>the answer was "{data.answer}"</p>
-			{/if}
-			<button data-key="enter" class="restart selected" formaction="?/restart">
-				{won ? 'you won :)' : `game over :(`} play again?
-			</button>
+			<Won {won} answer={data.answer ?? undefined} />
 		{:else}
-			<div class="keyboard">
-				<button data-key="enter" class:selected={submittable} disabled={!submittable}>enter</button>
-
-				<button
-					onclick={update}
-					data-key="backspace"
-					formaction="?/update"
-					name="key"
-					value="backspace"
-				>
-					back
-				</button>
-
-				{#each ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'] as row (row)}
-					<div class="row">
-						{#each row as letter, index (index)}
-							<button
-								onclick={update}
-								data-key={letter}
-								class={classnames[letter]}
-								disabled={submittable}
-								formaction="?/update"
-								name="key"
-								value={letter}
-								aria-label="{letter} {description[letter] || ''}"
-							>
-								{letter}
-							</button>
-						{/each}
-					</div>
-				{/each}
-			</div>
+			<Keyboard 
+				{classnames} 
+				descriptions={description} 
+				{submittable} 
+				onUpdate={update} 
+			/>
 		{/if}
 	</div>
 </form>
-
-{#if won}
-	<div
-		style="position: absolute; left: 50%; top: 30%"
-		use:confetti={{
-			particleCount: reducedMotion.current ? 0 : undefined,
-			force: 0.7,
-			stageWidth: window.innerWidth,
-			stageHeight: window.innerHeight,
-			colors: ['#ff3e00', '#40b3ff', '#676778']
-		}}
-	></div>
-{/if}
 
 <style>
 	form {
@@ -212,106 +160,9 @@
 		top: -0.05em;
 	}
 
-	.grid {
-		--width: min(100vw, 40vh, 380px);
-		max-width: var(--width);
-		align-self: center;
-		justify-self: center;
-		width: 100%;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-	}
-
 	.controls {
 		text-align: center;
 		justify-content: center;
 		height: min(18vh, 10rem);
-	}
-
-	.keyboard {
-		--gap: 0.2rem;
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		gap: var(--gap);
-		height: 100%;
-	}
-
-	.keyboard .row {
-		display: flex;
-		justify-content: center;
-		gap: 0.2rem;
-		flex: 1;
-	}
-
-	.keyboard button,
-	.keyboard button:disabled {
-		--size: min(8vw, 4vh, 40px);
-		background-color: white;
-		color: black;
-		width: var(--size);
-		border: none;
-		border-radius: 2px;
-		font-size: calc(var(--size) * 0.5);
-		margin: 0;
-	}
-
-	.keyboard button.exact {
-		background: var(--color-theme-2);
-		color: white;
-	}
-
-	.keyboard button.missing {
-		opacity: 0.5;
-	}
-
-	.keyboard button.close {
-		border: 2px solid var(--color-theme-2);
-	}
-
-	.keyboard button:focus {
-		background: var(--color-theme-1);
-		color: white;
-		outline: none;
-	}
-
-	.keyboard button[data-key='enter'],
-	.keyboard button[data-key='backspace'] {
-		position: absolute;
-		bottom: 0;
-		width: calc(1.5 * var(--size));
-		height: calc(1 / 3 * (100% - 2 * var(--gap)));
-		text-transform: uppercase;
-		font-size: calc(0.3 * var(--size));
-		padding-top: calc(0.15 * var(--size));
-	}
-
-	.keyboard button[data-key='enter'] {
-		right: calc(50% + 3.5 * var(--size) + 0.8rem);
-	}
-
-	.keyboard button[data-key='backspace'] {
-		left: calc(50% + 3.5 * var(--size) + 0.8rem);
-	}
-
-	.keyboard button[data-key='enter']:disabled {
-		opacity: 0.5;
-	}
-
-	.restart {
-		width: 100%;
-		padding: 1rem;
-		background: rgba(255, 255, 255, 0.5);
-		border-radius: 2px;
-		border: none;
-	}
-
-	.restart:focus,
-	.restart:hover {
-		background: var(--color-theme-1);
-		color: white;
-		outline: none;
 	}
 </style>

@@ -58,7 +58,6 @@
 		filter: drop-shadow(3px 3px 10px var(--color-bg-0));
 	}
 
-	/* Keyframes moved from +page.svelte */
 	@keyframes wiggle {
 		0% { transform: translateX(0); }
 		10% { transform: translateX(-2px); }
