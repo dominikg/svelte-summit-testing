@@ -3,6 +3,7 @@
 	import { confetti } from '@neoconfetti/svelte';
 	import type { ActionData, PageData } from './$types';
 	import { MediaQuery } from 'svelte/reactivity';
+	import Cell from './Cell.svelte';
 
 	interface Props {
 		data: PageData;
@@ -113,27 +114,14 @@
 			<div class="row" class:current>
 				{#each Array.from(Array(5).keys()) as column (column)}
 					{@const guess = current ? currentGuess : data.guesses[row]}
-					{@const answer = data.answers[row]?.[column]}
-					{@const value = guess?.[column] ?? ''}
-					{@const selected = current && column === guess.length}
-					{@const exact = answer === 'x'}
-					{@const close = answer === 'c'}
-					{@const missing = answer === '_'}
-					<div class="letter" class:exact class:close class:missing class:selected>
-						{value}
-						<span class="visually-hidden">
-							{#if exact}
-								(correct)
-							{:else if close}
-								(present)
-							{:else if missing}
-								(absent)
-							{:else}
-								empty
-							{/if}
-						</span>
-						<input name="guess" disabled={!current} type="hidden" {value} />
-					</div>
+					<Cell 
+						value={(current ? currentGuess : data.guesses[row])?.[column]}
+						selected={current && column === guess.length}
+						exact={data.answers[row]?.[column] === 'x'}
+						close={data.answers[row]?.[column] === 'c'}
+						missing={data.answers[row]?.[column] === '_'}
+						disabled={!current}
+					/>
 				{/each}
 			</div>
 		{/each}
@@ -257,41 +245,6 @@
 
 	.grid.playing .row.current {
 		filter: drop-shadow(3px 3px 10px var(--color-bg-0));
-	}
-
-	.letter {
-		aspect-ratio: 1;
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		box-sizing: border-box;
-		text-transform: lowercase;
-		border: none;
-		font-size: calc(0.08 * var(--width));
-		border-radius: 2px;
-		background: white;
-		margin: 0;
-		color: rgba(0, 0, 0, 0.7);
-	}
-
-	.letter.missing {
-		background: rgba(255, 255, 255, 0.5);
-		color: rgba(0, 0, 0, 0.5);
-	}
-
-	.letter.exact {
-		background: var(--color-theme-2);
-		color: white;
-	}
-
-	.letter.close {
-		border: 2px solid var(--color-theme-2);
-	}
-
-	.selected {
-		outline: 2px solid var(--color-theme-1);
 	}
 
 	.controls {
