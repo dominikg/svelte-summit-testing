@@ -3,7 +3,7 @@
 	import type { ActionData, PageData } from './$types';
 	import Grid from './board/Grid.svelte';
 	import Keyboard from './controls/Keyboard.svelte';
-	import Won from './controls/Won.svelte';
+	import Result from './controls/Result.svelte';
 
 	interface Props {
 		data: PageData;
@@ -113,7 +113,7 @@
 
 	<div class="controls">
 		{#if won || data.answers.length >= 6}
-			<Won {won} answer={data.answer ?? undefined} />
+			<Result {won} answer={data.answer ?? undefined} />
 		{:else}
 			<Keyboard {classnames} descriptions={description} {submittable} onUpdate={update} />
 		{/if}
