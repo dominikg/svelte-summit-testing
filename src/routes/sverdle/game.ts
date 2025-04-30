@@ -1,4 +1,8 @@
-import { words, allowed } from './words.server';
+import { words, allowed } from './words';
+
+export const serializeGame = (game: Pick<Game, 'index' | 'guesses' | 'answers'>) => {
+	return `${game.index}-${game.guesses.join(' ')}-${game.answers.join(' ')}`;
+};
 
 export class Game {
 	index: number;
@@ -70,6 +74,6 @@ export class Game {
 	 * Serialize game state so it can be set as a cookie
 	 */
 	toString() {
-		return `${this.index}-${this.guesses.join(' ')}-${this.answers.join(' ')}`;
+		return serializeGame(this);
 	}
 }
