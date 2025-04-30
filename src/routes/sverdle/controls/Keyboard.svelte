@@ -14,7 +14,9 @@
 </script>
 
 <div class="keyboard">
-	<button data-key="enter" class:selected={submittable} disabled={!submittable}>enter</button>
+	<button data-key="enter" class:selected={submittable} disabled={!submittable} aria-label="enter">
+		enter
+	</button>
 
 	<button
 		onclick={onUpdate}
@@ -22,6 +24,7 @@
 		formaction="?/update"
 		name="key"
 		value="backspace"
+		aria-label="backspace"
 	>
 		back
 	</button>
