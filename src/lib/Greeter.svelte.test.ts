@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/svelte';
+import { render } from 'vitest-browser-svelte';
 import { flushSync } from 'svelte';
 import Greeter from './Greeter.svelte';
 describe('Greeter.svelte', () => {

@@ -1,4 +1,3 @@
-import { svelteTesting } from '@testing-library/svelte/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
@@ -8,10 +7,16 @@ export default defineConfig({
 		workspace: [
 			{
 				extends: './vite.config.ts',
-				plugins: [svelteTesting()],
-				test: {
+				test:{
 					name: 'client',
-					environment: 'jsdom',
+					environment: 'browser',
+					browser:{
+						enabled: true,
+						provider: 'playwright',
+						instances:[{
+							browser: 'chromium'
+						}]
+					},
 					clearMocks: true,
 					include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
 					exclude: ['src/lib/server/**'],
