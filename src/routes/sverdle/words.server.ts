@@ -6789,6 +6789,7 @@ export const allowed = new Set([
 	'jemmy',
 	'jenny',
 	'jeons',
+	'jeppe',
 	'jerid',
 	'jerks',
 	'jerry',
