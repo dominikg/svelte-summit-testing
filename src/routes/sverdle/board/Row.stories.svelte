@@ -8,7 +8,6 @@
 		component: Row,
 		// @ts-expect-error -- will be fixed soon
 		render: template,
-		tags: ['autodocs'],
 		args: {
 			rowNumber: 0,
 			isCurrentRow: false,

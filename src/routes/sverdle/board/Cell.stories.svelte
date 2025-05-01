@@ -8,7 +8,6 @@
 		component: Cell,
 		// @ts-expect-error -- will be fixed soon
 		render: template,
-		tags: ['autodocs'],
 		args: {
 			value: 'A',
 			selected: false,

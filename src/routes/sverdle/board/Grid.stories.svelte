@@ -8,7 +8,6 @@
 		component: Grid,
 		// @ts-expect-error -- will be fixed soon
 		render: template,
-		tags: ['autodocs'],
 		args: {
 			guesses: ['ready', '', '', '', '', ''],
 			answers: ['_c__x', '', '', '', '', ''],
