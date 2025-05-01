@@ -1,9 +1,14 @@
 import { fail } from '@sveltejs/kit';
 import { Game } from './game';
 import type { PageServerLoad, Actions } from './$types';
+import { words, allowed } from './words.server';
 
 export const load = (({ cookies }) => {
-	const game = new Game(cookies.get('sverdle'));
+	const game = new Game({
+		serialized: cookies.get('sverdle'),
+		words,
+		allowed
+	});
 
 	return {
 		/**
@@ -30,7 +35,11 @@ export const actions = {
 	 * is available, this will happen in the browser instead of here
 	 */
 	update: async ({ request, cookies }) => {
-		const game = new Game(cookies.get('sverdle'));
+		const game = new Game({
+			serialized: cookies.get('sverdle'),
+			words,
+			allowed
+		});
 
 		const data = await request.formData();
 		const key = data.get('key');
@@ -51,7 +60,11 @@ export const actions = {
 	 * the server, so that people can't cheat by peeking at the JavaScript
 	 */
 	enter: async ({ request, cookies }) => {
-		const game = new Game(cookies.get('sverdle'));
+		const game = new Game({
+			serialized: cookies.get('sverdle'),
+			words,
+			allowed
+		});
 
 		const data = await request.formData();
 		const guess = data.getAll('guess') as string[];
