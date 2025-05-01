@@ -1,19 +1,32 @@
-import { words, allowed } from './words';
-
-export const serializeGame = (game: Pick<Game, 'index' | 'guesses' | 'answers'>) => {
-	return `${game.index}-${game.guesses.join(' ')}-${game.answers.join(' ')}`;
-};
-
 export class Game {
 	index: number;
 	guesses: string[];
 	answers: string[];
 	answer: string;
 
+	private allowed: Set<string>;
+
+	/**
+	 * Serialize game state so it can be set as a cookie
+	 */
+	static serialize(game: Pick<Game, 'index' | 'guesses' | 'answers'>) {
+		return `${game.index}-${game.guesses.join(' ')}-${game.answers.join(' ')}`;
+	}
+
 	/**
 	 * Create a game object from the player's cookie, or initialise a new game
 	 */
-	constructor(serialized: string | undefined = undefined) {
+	constructor({
+		serialized,
+		words,
+		allowed
+	}: {
+		serialized?: string | undefined;
+		words: string[];
+		allowed: Set<string>;
+	}) {
+		this.allowed = allowed;
+
 		if (serialized) {
 			const [index, guesses, answers] = serialized.split('-');
 
@@ -35,7 +48,7 @@ export class Game {
 	 */
 	enter(letters: string[]) {
 		const word = letters.join('');
-		const valid = allowed.has(word);
+		const valid = this.allowed.has(word);
 
 		if (!valid) return false;
 
@@ -70,10 +83,7 @@ export class Game {
 		return true;
 	}
 
-	/**
-	 * Serialize game state so it can be set as a cookie
-	 */
 	toString() {
-		return serializeGame(this);
+		return Game.serialize(this);
 	}
 }
