@@ -138,30 +138,37 @@
 
 <Story
 	name="Typed Guesses"
-	play={async ({ canvas, canvasElement }) => {
+	play={async ({ canvas, canvasElement, step }) => {
 		const guesses = ['books', 'props', 'barca', 'glory', 'story'];
+
 		for (const guess of guesses) {
-			for (const letter of guess.split('')) {
-				await userEvent.type(canvasElement, letter);
-			}
-			await userEvent.keyboard('{enter}');
+			await step(`Guess '${guess}'`, async () => {
+				await userEvent.type(canvasElement, guess);
+				await userEvent.keyboard('{enter}');
+			});
 		}
-		await expect(await canvas.getByText(/you won/i)).toBeInTheDocument();
+		await step('Expect win', async () => {
+			await expect(await canvas.getByText(/you won/i)).toBeInTheDocument();
+		});
 	}}
 />
 
 <Story
 	name="Clicked Guesses"
-	play={async ({ canvas }) => {
+	play={async ({ canvas, step }) => {
 		const guesses = ['props', 'runes', 'barca', 'glory', 'store', 'tyros'];
 		for (const guess of guesses) {
-			for (const letter of guess.split('')) {
-				await userEvent.click(canvas.getByLabelText(new RegExp(`^${letter}(\\s|$)`, 'i'))!);
-			}
-			await userEvent.click(canvas.getByLabelText('enter')!);
+			await step(`Guess '${guess}'`, async () => {
+				for (const letter of guess.split('')) {
+					await userEvent.click(canvas.getByLabelText(new RegExp(`^${letter}(\\s|$)`, 'i')));
+				}
+				await userEvent.click(canvas.getByLabelText('enter'));
+			});
 		}
-		await expect(await canvas.getByText('the answer was "story"')).toBeInTheDocument();
-		await expect(await canvas.getByText(/game over/i)).toBeInTheDocument();
+		await step('Expect loss', async () => {
+			await expect(await canvas.getByText('the answer was "story"')).toBeInTheDocument();
+			await expect(await canvas.getByText(/game over/i)).toBeInTheDocument();
+		});
 	}}
 />
 
