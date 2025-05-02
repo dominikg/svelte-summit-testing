@@ -39,7 +39,8 @@ export default defineConfig({
 					// The plugin will run tests for the stories defined in your Storybook config
 					// See options at: https://storybook.js.org/docs/writing-tests/test-addon#storybooktest
 					storybookTest({
-						configDir: path.join(dirname, '.storybook')
+						configDir: path.join(dirname, '.storybook'),
+						storybookScript: 'pnpm storybook --no-open'
 					})
 				],
 				test: {
