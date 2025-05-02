@@ -3,19 +3,20 @@
 
 	import Cell from './Cell.svelte';
 
+	const defaultArgs = {
+		value: 'a',
+		selected: false,
+		exact: false,
+		close: false,
+		missing: false,
+		disabled: false
+	};
 	const { Story } = defineMeta({
 		title: 'Sverdle/Board/Cell',
 		component: Cell,
 		// @ts-expect-error -- will be fixed soon
 		render: template,
-		args: {
-			value: 'A',
-			selected: false,
-			exact: false,
-			close: false,
-			missing: false,
-			disabled: false
-		},
+		args: defaultArgs,
 		parameters: {
 			layout: 'centered'
 		}
@@ -23,14 +24,6 @@
 </script>
 
 {#snippet template(args)}
-	<style>
-		.container {
-			width: 60px;
-			height: 60px;
-			--width: 600px;
-			padding: 4rem;
-		}
-	</style>
 	<div class="container">
 		<Cell {...args} />
 	</div>
@@ -47,3 +40,33 @@
 <Story name="Selected Exact" args={{ value: 'h', selected: true, exact: true }} />
 <Story name="Selected Close" args={{ value: 'i', selected: true, close: true }} />
 <Story name="Selected Missing" args={{ value: 'j', selected: true, missing: true }} />
+
+<Story name="All" asChild>
+	<style>
+		.container.all-container {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			grid-gap: 0.2rem;
+			margin: 0 0 0.2rem 0;
+			width: 500px;
+		}
+	</style>
+	<div class="container all-container">
+		<Cell {...defaultArgs} value="" />
+		<Cell {...defaultArgs} value="b" />
+		<Cell {...defaultArgs} value="c" selected />
+		<Cell {...defaultArgs} value="d" exact />
+		<Cell {...defaultArgs} value="e" close />
+		<Cell {...defaultArgs} value="f" missing />
+		<Cell {...defaultArgs} value="g" disabled />
+	</div>
+</Story>
+
+<style>
+	.container {
+		width: 60px;
+		height: 60px;
+		--width: 600px;
+		padding: 4rem;
+	}
+</style>
