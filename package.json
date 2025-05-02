@@ -16,6 +16,7 @@
 		"test": "npm run test:unit -- --run",
 		"storybook": "storybook dev -p 6006",
 		"test:storybook": "npm run test:unit -- --run --project storybook",
+		"test:visual": "chromatic --project-token $CHROMATIC_PROJECT_TOKEN",
 		"build-storybook": "storybook build"
 	},
 	"devDependencies": {
@@ -38,6 +39,7 @@
 		"@vitest/browser": "3.1.2",
 		"@vitest/coverage-v8": "3.1.2",
 		"axe-core": "^4.10.3",
+		"chromatic": "^11.28.2",
 		"eslint": "^9.18.0",
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-storybook": "9.0.0-beta.6",
