@@ -18,6 +18,11 @@
 		},
 		parameters: {
 			layout: 'centered'
+		},
+		globals: {
+			backgrounds: {
+				value: 'lightblue'
+			}
 		}
 	});
 </script>
