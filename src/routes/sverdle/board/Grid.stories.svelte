@@ -16,6 +16,11 @@
 			isPlaying: true,
 			isBadGuess: false
 		},
+		argTypes: {
+			currentIndex: {
+				control: { type: 'number', min: 0, max: 5, step: 1 }
+			}
+		},
 		parameters: {
 			layout: 'centered'
 		},
