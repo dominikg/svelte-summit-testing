@@ -15,7 +15,7 @@
 		$props();
 </script>
 
-<h2 class="visually-hidden">Row {rowNumber + 1}</h2>
+<h3 class="visually-hidden">Row {rowNumber + 1}</h3>
 <div
 	class="row"
 	class:current={isCurrentRow}
