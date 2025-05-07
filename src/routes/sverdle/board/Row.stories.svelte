@@ -6,7 +6,6 @@
 	const { Story } = defineMeta({
 		title: 'Sverdle/Board/Row',
 		component: Row,
-		// @ts-expect-error -- will be fixed soon
 		render: template,
 		args: {
 			rowNumber: 0,

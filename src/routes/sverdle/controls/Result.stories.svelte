@@ -6,7 +6,6 @@
 	const { Story } = defineMeta({
 		title: 'Sverdle/Controls/Result',
 		component: Result,
-		//@ts-expect-error - bug, will be fixed soon
 		render: template,
 		args: {
 			won: false,

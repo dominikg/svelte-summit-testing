@@ -6,7 +6,6 @@
 	const { Story } = defineMeta({
 		title: 'Sverdle/Board/Grid',
 		component: Grid,
-		// @ts-expect-error -- will be fixed soon
 		render: template,
 		args: {
 			guesses: ['ready', '', '', '', '', ''],

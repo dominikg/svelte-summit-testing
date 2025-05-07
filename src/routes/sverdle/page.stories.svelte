@@ -77,13 +77,12 @@
 	});
 
 	const { Story } = defineMeta({
-		//@ts-expect-error -- typings are wrong..
 		render: template,
 		args: {
 			initialGuesses: ['', '', '', '', '', ''],
 			answer: 'story'
 		},
-		beforeEach: ({ args }: { args: { initialGuesses: string[]; answer: string } }) => {
+		beforeEach: ({ args }) => {
 			const { initialGuesses, answer } = args;
 			const game = new Game({
 				serialized: Game.serialize({
@@ -118,7 +117,8 @@
 	});
 </script>
 
-{#snippet template()}
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
+{#snippet template(_args: { initialGuesses: string[]; answer: string })}
 	<Page {form} {data} />
 {/snippet}
 

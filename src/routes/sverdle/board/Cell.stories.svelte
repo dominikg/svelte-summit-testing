@@ -14,7 +14,6 @@
 	const { Story } = defineMeta({
 		title: 'Sverdle/Board/Cell',
 		component: Cell,
-		// @ts-expect-error -- will be fixed soon
 		render: template,
 		args: defaultArgs,
 		parameters: {
